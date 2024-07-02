@@ -12,11 +12,11 @@ export default function Home() {
       <div className="text-center">
         <h1 className="text-3xl">Welcome to Snacks</h1>
         <p className="text-slate-600">
-         Under Maintenance.
+         Talk to snacks to get fitter
         </p>
       </div>
 
-      {/* <Assistant /> */}
+      <Assistant />
     </main>
   );
 }
