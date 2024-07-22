@@ -1,6 +1,8 @@
 "use client";
 
-import { assistant } from "@/assistants/assistant";
+import { newAssistant, createOldAssistant } from "@/assistants/assistant";
+import { useCookies } from 'react-cookie';
+
 
 import {
   Message,
@@ -11,12 +13,15 @@ import {
 import { useEffect, useState } from "react";
 // import { MessageActionTypeEnum, useMessages } from "./useMessages";
 import { vapi } from "@/lib/vapi.sdk";
+import { Electrolize } from "next/font/google";
 
 export enum CALL_STATUS {
   INACTIVE = "inactive",
   ACTIVE = "active",
   LOADING = "loading",
 }
+
+
 
 export function useVapi() {
   const [isSpeechActive, setIsSpeechActive] = useState(false);
@@ -31,8 +36,13 @@ export function useVapi() {
 
   const [audioLevel, setAudioLevel] = useState(0);
 
+  //--- implement cookie
+  const [cookies, setCookie, removeCookie] = useCookies(['user']);
+
+
   useEffect(() => {
-    const onSpeechStart = () => setIsSpeechActive(true);
+    const onSpeechStart = () => {
+      setIsSpeechActive(true)};
     const onSpeechEnd = () => {
       console.log("Speech has ended");
       setIsSpeechActive(false);
@@ -92,7 +102,16 @@ export function useVapi() {
 
   const start = async () => {
     setCallStatus(CALL_STATUS.LOADING);
-    const response = vapi.start("8a30520c-6716-4d3a-a063-f496f10ce869");
+    var response;
+    if (cookies.user) {
+      console.log(cookies.user)
+       response = vapi.start(createOldAssistant(cookies.user));
+    }else{
+      console.log("NO ueser foind")
+       response = vapi.start(newAssistant);
+    }
+   
+    //"8a30520c-6716-4d3a-a063-f496f10ce869"
 
     response.then((res) => {
       console.log("call", res);

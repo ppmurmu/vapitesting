@@ -1,0 +1,24 @@
+.timerContainer {
+    text-align: center;
+  }
+  
+  .timerDisplay {
+    font-size: 3rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-bottom: 20px;
+  }
+  
+  .timerButton {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .timerButton:hover {
+    background-color: #45a049;
+  }
+  
