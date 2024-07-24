@@ -18,8 +18,6 @@ export default function Home() {
       <img src="/snacks_logo.png" alt="Logo" className="w-auto h-16" />
     </div>
       <div className="text-center">
-     
-        {/* <h1 className="text-3xl">Welcome to Snacks</h1> */}
         <p className="text-slate-600">
         
         </p>

@@ -28,8 +28,9 @@ interface ExerciseComponentProps {
               type: MessageTypeEnum.ADD_MESSAGE,
               message: {
                 role: "system",
-                content: `Ask the user if they want to continue exercies or not.
-                If user replies with No, then end the exercise and thank them for the session otherwise continue playing the exercise.
+                content: `Ask the user "Do you want to continue the exercise or not?"
+                If user replies with Yes, then continue the exercise.
+                If user replies with No, then end the exercise and ask for feedback.
                 `,
               },
             });

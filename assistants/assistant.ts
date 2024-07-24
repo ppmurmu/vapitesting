@@ -1,6 +1,8 @@
 import { CreateAssistantDTO } from "@vapi-ai/web/dist/api";
 import { shows } from "../data/shows";
 
+// At the end of the session, ask the user if they want to continue or not. when said yes, continue otherwise
+//thank the user and ask for feedback.
 
 export const createOldAssistant = (name: string): CreateAssistantDTO  | any => {
   return {
@@ -16,8 +18,8 @@ export const createOldAssistant = (name: string): CreateAssistantDTO  | any => {
       If during the session user asks quetions then pause the exercise and tell the user that we can discuss this later
       and now have to complete the session first.
       During the whole session, users can say to pause or stop the exercise.
-      At the end of the session, ask the user if they want to continue or not. when said yes, continue otherwise
-      thank the user and end the call.
+      At the end, if the user doesn't continue the exercise, ask for feedback and save it.
+     
       `,
       
      
@@ -80,6 +82,19 @@ export const createOldAssistant = (name: string): CreateAssistantDTO  | any => {
                 description: "true for continue and false to end it"
               },
              
+            }
+          }
+        } ,
+        {
+          name: "saveFeedbackResponse",
+          description: "When asked for feedback, save the user's reply",
+          parameters: {
+            type: "object",
+            properties: {
+              feedback: {
+                type: "string",
+                description: "reply of the user"
+              },
             }
           }
         } 

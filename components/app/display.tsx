@@ -11,7 +11,7 @@ import { useCookies } from 'react-cookie';
 function Display() {
  
   //this controls the display
-  const [status, setStatus] = React.useState<"introduction" | "playExercise" | "pauseExercise" | "saveUser" >(
+  const [status, setStatus] = React.useState<"introduction" | "playExercise" | "pauseExercise" | "saveUser" | "askFeedback" >(
     "introduction"
   );
 
@@ -27,6 +27,7 @@ function Display() {
   const [cookies, setCookie] = useCookies(['user']);
 
   const [continu, setContinu] = useState(false);
+  const [feedback, setFeedback] = useState("");
 
   
   const { isSpeechActive } = useVapi();
@@ -217,7 +218,23 @@ function Display() {
         const params = message.functionCall.parameters;
         setContinu(params.continue)
 
-        console.log(`------endingngngnng ${params.continue}`)
+       
+        
+      
+      }
+      else if (
+        message.type === MessageTypeEnum.FUNCTION_CALL &&
+        (
+          message.functionCall.name === "saveFeedbackResponse")
+      ) {
+        setMetronomePlaying(false);
+
+       
+        const params = message.functionCall.parameters;
+        setFeedback(params.feedback)
+        console.log(params.feedback)
+
+       
         
       
       }
@@ -287,6 +304,9 @@ function Display() {
       <ExerciseComponent shouldPlay={metronomePlaying && !isSpeechActive} continu={continu} 
       />
        {status == "playExercise" ? <h1>START STATE</h1> : null}
+       <div>
+       <h1>{feedback}</h1>
+       </div>
 {/*      
       <div className={styles.timerContainer}>
       <div className={styles.timerDisplay}>{seconds}</div>
