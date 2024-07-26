@@ -223,7 +223,7 @@ export const newAssistant: CreateAssistantDTO | any  = {
   },
   //adam voice calm
   firstMessage:
-    "Hi. I'm Snacks, Welcome to personal fitness assistant! How are u feeling today?",
+    "Hi. I'm Snacks, your workout buddy! How are u feeling today?",
   serverUrl: process.env.NEXT_PUBLIC_SERVER_URL
     ? process.env.NEXT_PUBLIC_SERVER_URL
     : "https://08ae-202-43-120-244.ngrok-free.app/api/webhook",
