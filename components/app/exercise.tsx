@@ -11,27 +11,43 @@ interface ExerciseComponentProps {
    
   }
 
-  
+ 
 
   
   const ExerciseComponent: React.FC<ExerciseComponentProps> = ({  shouldPlay}) => {
     const audioRef = useRef<HTMLAudioElement>(null);
-  
+
+    const { stop } = useVapi();
+
+   
     const handleAudioEnd = () => {
       if (audioRef.current) {
         audioRef.current.currentTime = 0;
         audioRef.current.pause();
        
       }
+      
       console.log('Audio has ended.-');
+      
+     
       vapi.send({
               type: MessageTypeEnum.ADD_MESSAGE,
               message: {
                 role: "system",
-                content: `End the exercise session and ask for feedback from the user. Use saveFeedbackResponse to save the response.
+                content: `Exercise session has ended. Thank the user.
                 `,
               },
             });
+
+          //  setTimeout(() => {
+          //     console.log("7 seconds done ")
+             
+          //     stop;
+          //   }, 7000);
+      
+     
+          
+      
     };
 
     useEffect(()=> {
@@ -52,7 +68,7 @@ interface ExerciseComponentProps {
     // }
 
 
-    }, [shouldPlay])
+    }, [shouldPlay, stop])
 
 
     // if (audioRef.current) {
@@ -69,8 +85,8 @@ interface ExerciseComponentProps {
     
   
     return (
-      <div className="flex gap-8 py-4">
-     {/* <div style={{ display: 'none' }}> */}
+      // <div className="flex gap-8 py-4">
+    <div style={{ display: 'none' }}> 
         <audio ref={audioRef} controls src="/tabata30.mp3">
           Your browser does not support the
           <code>audio</code> element.

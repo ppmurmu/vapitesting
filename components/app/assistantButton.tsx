@@ -31,6 +31,11 @@ const AssistantButton = ({
     cursor: "pointer",
   };
 
+ 
+
+
+
+
   return (
     <div>
    
@@ -53,7 +58,7 @@ const AssistantButton = ({
        
       ) : (
         <button  onClick={toggleCall} >
-        <img src="/button_main.png"  style={{ width: '50px', height: '50px' }} />
+        <img src="/button_main.png"  style={{ width: '120px', height: '120px' }} />
         </button>
       )}
       </div>

@@ -1,5 +1,6 @@
 import { CreateAssistantDTO } from "@vapi-ai/web/dist/api";
 import { shows } from "../data/shows";
+import { truncate } from "fs/promises";
 
 // At the end of the session, ask the user if they want to continue or not. when said yes, continue otherwise
 //thank the user and ask for feedback.
@@ -8,11 +9,11 @@ export const createOldAssistant = (name: string): CreateAssistantDTO  | any => {
   return {
     name: "Paula-broadway",
     model: {
-      //provider: "openai",
-      //model: "gpt-3.5-turbo",
-      provider: "groq",
-      model: "llama3-70b-8192",
-      temperature: 0.4,
+      provider: "openai",
+      model: "gpt-3.5-turbo",
+      //provider: "groq",
+      //model: "llama3-70b-8192",
+      temperature: 0.7,
       systemPrompt: `
       [Identity]
       You're Snacks, an AI Voice assistant who helps users with their fitness session.
@@ -20,8 +21,9 @@ export const createOldAssistant = (name: string): CreateAssistantDTO  | any => {
     [Task]
     1. Say "Today's session is 4 minutes long, are you ready to start the exercise?". Ask user if they are ready to start the exercise. 
     <wait for user response>
-    2. If the answer is yes, then start the exercise, use playExercise function.
-    3. If during the session, user asks questions or says to pause, use pauseExercise function.  
+    2. If the answer is yes, then start the exercise, use playExercise function. Say "Lets Go!"
+    3. If during the session, user asks questions or says to pause, use pauseExercise function.  Ask user for permission to resume the exercise. Say " Exercise is Paused, are you ready to resume the exercise?"
+    4. When the exercise has ended, thank the user and end the call.
       `,
       
      
@@ -87,18 +89,23 @@ export const createOldAssistant = (name: string): CreateAssistantDTO  | any => {
         //     }
         //   }
         // } ,
+        // {
+        //   name: "saveFeedbackResponse",
+        //   description: "When asked for feedback, save the user's reply",
+        //   parameters: {
+        //     type: "object",
+        //     properties: {
+        //       feedback: {
+        //         type: "string",
+        //         description: "reply of the user"
+        //       },
+        //     }
+        //   }
+        // } ,
         {
-          name: "saveFeedbackResponse",
-          description: "When asked for feedback, save the user's reply",
-          parameters: {
-            type: "object",
-            properties: {
-              feedback: {
-                type: "string",
-                description: "reply of the user"
-              },
-            }
-          }
+          name: "endExercise",
+          description: "The exercise has ended.",
+          async: true
         } 
       ],
     },
@@ -136,8 +143,10 @@ export const newAssistant: CreateAssistantDTO | any  = {
     <wait for user response>
     2.  Say "Today's session is 4 minutes long, are you ready to start the exercise?". Ask user if they are ready to start the exercise.
     <wait for user response>
-    3. If the answer is yes, then start the exercise, use playExercise function.
-    4. If during the session, user asks questions or says to pause, use pauseExercise function.  
+    3. If the answer is yes, then start the exercise, use playExercise function. Say "Lets Go!"
+    4. If during the session, user asks questions or says to pause, use pauseExercise function.  Ask user for permission to resume the exercise. Say " Exercise is Paused, are you ready to resume the exercise?"
+    5. When the exercise has ended, thank the user and end the call.
+    <wait for user response>
     `,
   
     functions: [
@@ -202,18 +211,23 @@ export const newAssistant: CreateAssistantDTO | any  = {
       //     }
       //   }
       // }  
+      // {
+      //   name: "saveFeedbackResponse",
+      //   description: "When asked for feedback, save the user's reply",
+      //   parameters: {
+      //     type: "object",
+      //     properties: {
+      //       feedback: {
+      //         type: "string",
+      //         description: "reply of the user"
+      //       },
+      //     }
+      //   }
+      // } ,
       {
-        name: "saveFeedbackResponse",
-        description: "When asked for feedback, save the user's reply",
-        parameters: {
-          type: "object",
-          properties: {
-            feedback: {
-              type: "string",
-              description: "reply of the user"
-            },
-          }
-        }
+        name: "endExercise",
+        description: "The exercise has ended.",
+        async: true
       } 
     ],
   },

@@ -11,7 +11,7 @@ import { useCookies } from 'react-cookie';
 function Display() {
  
   //this controls the display
-  const [status, setStatus] = React.useState<"introduction" | "playExercise" | "pauseExercise" | "saveUser" | "askFeedback" >(
+  const [status, setStatus] = React.useState<"introduction" | "playExercise" | "pauseExercise" | "saveUser"  >(
     "introduction"
   );
 
@@ -30,7 +30,7 @@ function Display() {
   const [feedback, setFeedback] = useState("");
 
   
-  const { isSpeechActive } = useVapi();
+  const { isSpeechActive, stop } = useVapi();
 
   const [ name, setName] = useState("");
   const [ age, setAge ]= useState("");
@@ -192,7 +192,7 @@ function Display() {
           message.functionCall.name === "playExercise")
       ) {
         
-        setTimerPlaying(true);
+        //setTimerPlaying(true);
         setMetronomePlaying(true);
         setStatus("playExercise");        
       }
@@ -201,8 +201,12 @@ function Display() {
         (
           message.functionCall.name === "pauseExercise")
       ) {
-        setTimerPlaying(false);
+
+       //setTimerPlaying(false);
+     
         setMetronomePlaying(false);
+       
+       
         setStatus(
           "pauseExercise"
         );
@@ -219,21 +223,27 @@ function Display() {
       //   const params = message.functionCall.parameters;
       //   setContinu(params.continue)
       // }
+      // else if (
+      //   message.type === MessageTypeEnum.FUNCTION_CALL &&
+      //   (
+      //     message.functionCall.name === "saveFeedbackResponse")
+      // ) {
+        
+      //     setMetronomePlaying(false);
+      //   const params = message.functionCall.parameters;
+      //   setFeedback(params.feedback)
+      //   console.log(params.feedback)
+      // }
       else if (
         message.type === MessageTypeEnum.FUNCTION_CALL &&
         (
-          message.functionCall.name === "saveFeedbackResponse")
+          message.functionCall.name === "endExercise")
       ) {
-        setMetronomePlaying(false);
-
        
-        const params = message.functionCall.parameters;
-        setFeedback(params.feedback)
-        console.log(params.feedback)
-
-       
+          setMetronomePlaying(false);
+          
+          
         
-      
       }
     };
 
@@ -300,10 +310,8 @@ function Display() {
       {/* <Metronome isPlaying={metronomePlaying} bpm={100}/> */}
       <ExerciseComponent shouldPlay={metronomePlaying && !isSpeechActive} 
       />
+        
       
-       <div>
-       <h1 className="color: white">{feedback}</h1>
-       </div>
 {/*      
       <div className={styles.timerContainer}>
       <div className={styles.timerDisplay}>{seconds}</div>
