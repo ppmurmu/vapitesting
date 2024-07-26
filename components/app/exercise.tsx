@@ -8,13 +8,13 @@ interface ExerciseComponentProps {
    // callStatus: CALL_STATUS;
     shouldPlay: boolean;
   //  tempo: string;
-    continu: boolean;
+   
   }
 
   
 
   
-  const ExerciseComponent: React.FC<ExerciseComponentProps> = ({  shouldPlay, continu}) => {
+  const ExerciseComponent: React.FC<ExerciseComponentProps> = ({  shouldPlay}) => {
     const audioRef = useRef<HTMLAudioElement>(null);
   
     const handleAudioEnd = () => {
@@ -28,16 +28,10 @@ interface ExerciseComponentProps {
               type: MessageTypeEnum.ADD_MESSAGE,
               message: {
                 role: "system",
-                content: `Ask the user "Do you want to continue the exercise or not?"
-                If user replies with Yes, then continue the exercise.
-                If user replies with No, then end the exercise and ask for feedback.
+                content: `End the exercise session and ask for feedback from the user. Use saveFeedbackResponse to save the response.
                 `,
               },
             });
-
-        
-
-      
     };
 
     useEffect(()=> {
@@ -77,7 +71,7 @@ interface ExerciseComponentProps {
     return (
       <div className="flex gap-8 py-4">
      {/* <div style={{ display: 'none' }}> */}
-        <audio ref={audioRef} controls src={continu ? "/tabata30.mp3" : "/tabata20.mp3" }>
+        <audio ref={audioRef} controls src="/tabata30.mp3">
           Your browser does not support the
           <code>audio</code> element.
         </audio>

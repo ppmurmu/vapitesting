@@ -8,18 +8,20 @@ export const createOldAssistant = (name: string): CreateAssistantDTO  | any => {
   return {
     name: "Paula-broadway",
     model: {
-      provider: "openai",
-      model: "gpt-3.5-turbo",
-      temperature: 0.7,
-      systemPrompt: `You're snacks, an AI assitant who helps users with their fitness. Your role is to provide guided fitness training.
-      Ask user if they are ready to start the exercise.
-      When said yes, start the exercise and don't say anything extra about exercise.
-      Always remain quiet unless asked to do so.
-      If during the session user asks quetions then pause the exercise and tell the user that we can discuss this later
-      and now have to complete the session first.
-      During the whole session, users can say to pause or stop the exercise.
-      At the end, if the user doesn't continue the exercise, ask for feedback and save it.
-     
+      //provider: "openai",
+      //model: "gpt-3.5-turbo",
+      provider: "groq",
+      model: "llama3-70b-8192",
+      temperature: 0.4,
+      systemPrompt: `
+      [Identity]
+      You're Snacks, an AI Voice assistant who helps users with their fitness session.
+
+    [Task]
+    1. Say "Today's session is 4 minutes long, are you ready to start the exercise?". Ask user if they are ready to start the exercise. 
+    <wait for user response>
+    2. If the answer is yes, then start the exercise, use playExercise function.
+    3. If during the session, user asks questions or says to pause, use pauseExercise function.  
       `,
       
      
@@ -71,20 +73,20 @@ export const createOldAssistant = (name: string): CreateAssistantDTO  | any => {
         //     }
         //   }
         // } ,
-        {
-          name: "continueOrEndExercise",
-          description: "At the end of the session, Ask if the user wants to continue the exercise or end it",
-          parameters: {
-            type: "object",
-            properties: {
-              continue: {
-                type: "boolean",
-                description: "true for continue and false to end it"
-              },
+        // {
+        //   name: "continueOrEndExercise",
+        //   description: "At the end of the session, Ask if the user wants to continue the exercise or end it",
+        //   parameters: {
+        //     type: "object",
+        //     properties: {
+        //       continue: {
+        //         type: "boolean",
+        //         description: "true for continue and false to end it"
+        //       },
              
-            }
-          }
-        } ,
+        //     }
+        //   }
+        // } ,
         {
           name: "saveFeedbackResponse",
           description: "When asked for feedback, save the user's reply",
@@ -113,7 +115,7 @@ export const createOldAssistant = (name: string): CreateAssistantDTO  | any => {
       : "https://08ae-202-43-120-244.ngrok-free.app/api/webhook",
     //serveUrl :"https://08ae-202-43-120-244.ngrok-free.app/api/webhook",
     silenceTimeoutSeconds: 300,
-  
+    maxDurationSeconds: 1800
   }
 };
 
@@ -125,18 +127,17 @@ export const newAssistant: CreateAssistantDTO | any  = {
   model: {
     provider: "openai",
     model: "gpt-3.5-turbo",
+   // provider: "groq",
+     // model: "llama3-70b-8192",
     temperature: 0.7,
     systemPrompt: `You're snacks, an AI assitant who helps users with their fitness. Your role is to provide guided fitness training.
-    Ask user for name and age.
-    Ask user if they are ready to start the exercise.
-    When said yes, start the exercise and don't say anything extra about exercise.
-    Always remain quiet unless asked to do so.
-    If during the session user asks quetions then pause the exercise and tell the user that we can discuss this later
-    and now have to complete the session first.
-    During the whole session, users can say to pause or stop the exercise.
-    At the end of the exercise 
-    At the end of the session, ask the user if they want to continue or not. when said yes, continue otherwise
-    thank the user and end the call.
+    [Task]
+    1. Ask for user's name and age
+    <wait for user response>
+    2.  Say "Today's session is 4 minutes long, are you ready to start the exercise?". Ask user if they are ready to start the exercise.
+    <wait for user response>
+    3. If the answer is yes, then start the exercise, use playExercise function.
+    4. If during the session, user asks questions or says to pause, use pauseExercise function.  
     `,
   
     functions: [
@@ -187,20 +188,33 @@ export const newAssistant: CreateAssistantDTO | any  = {
       //     }
       //   }
       // },
+      // {
+      //   name: "continueOrEndExercise",
+      //   description: "At the end of the session, ask if the user wants to continue the exercise or end it",
+      //   parameters: {
+      //     type: "object",
+      //     properties: {
+      //       continue: {
+      //         type: "boolean",
+      //         description: "true for continue and false to end it"
+      //       },
+           
+      //     }
+      //   }
+      // }  
       {
-        name: "continueOrEndExercise",
-        description: "At the end of the session, ask if the user wants to continue the exercise or end it",
+        name: "saveFeedbackResponse",
+        description: "When asked for feedback, save the user's reply",
         parameters: {
           type: "object",
           properties: {
-            continue: {
-              type: "boolean",
-              description: "true for continue and false to end it"
+            feedback: {
+              type: "string",
+              description: "reply of the user"
             },
-           
           }
         }
-      }  
+      } 
     ],
   },
   voice: {
@@ -215,5 +229,6 @@ export const newAssistant: CreateAssistantDTO | any  = {
     : "https://08ae-202-43-120-244.ngrok-free.app/api/webhook",
   //serveUrl :"https://08ae-202-43-120-244.ngrok-free.app/api/webhook",
   silenceTimeoutSeconds: 300,
+  maxDurationSeconds: 1800
 
 };

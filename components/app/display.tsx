@@ -208,20 +208,17 @@ function Display() {
         );
       
       }
-      else if (
-        message.type === MessageTypeEnum.FUNCTION_CALL &&
-        (
-          message.functionCall.name === "continueOrEndExercise")
-      ) {
-        setMetronomePlaying(false);
+      // else if (
+      //   message.type === MessageTypeEnum.FUNCTION_CALL &&
+      //   (
+      //     message.functionCall.name === "continueOrEndExercise")
+      // ) {
+      //   setMetronomePlaying(false);
+      //   console.log("continue or end exxercise phase")
        
-        const params = message.functionCall.parameters;
-        setContinu(params.continue)
-
-       
-        
-      
-      }
+      //   const params = message.functionCall.parameters;
+      //   setContinu(params.continue)
+      // }
       else if (
         message.type === MessageTypeEnum.FUNCTION_CALL &&
         (
@@ -301,11 +298,11 @@ function Display() {
       {/* <TimerComponent isPlaying={true} reset={resetTimerValue} onReset={handleReset}  onTimeUpdate={handleTimeUpdate} /> */}
 
       {/* <Metronome isPlaying={metronomePlaying} bpm={100}/> */}
-      <ExerciseComponent shouldPlay={metronomePlaying && !isSpeechActive} continu={continu} 
+      <ExerciseComponent shouldPlay={metronomePlaying && !isSpeechActive} 
       />
-       {status == "playExercise" ? <h1>START STATE</h1> : null}
+      
        <div>
-       <h1>{feedback}</h1>
+       <h1 className="color: white">{feedback}</h1>
        </div>
 {/*      
       <div className={styles.timerContainer}>
