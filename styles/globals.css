@@ -12,3 +12,7 @@
 .btn-idle {
   @apply bg-green-500 hover:bg-green-700;
 }
+
+.heading {
+  color: rgb(255, 255, 255);
+}

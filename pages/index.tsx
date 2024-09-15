@@ -17,12 +17,16 @@ export default function Home() {
       <div className="absolute top-0 left-0 m-4">
       <img src="/snacks_logo.png" alt="Logo" className="w-auto h-16" />
     </div>
-      <div className="text-center">
+    
+    <div className="text-center">
+        <h1 className="text-white text-4xl font-bold">Under Maintenance</h1>
         <p className="text-slate-600">
-        
+          {/* You can add more details or description here if needed */}
         </p>
       </div>
-      <Assistant/>
+    
+      {/* <Assistant/> */}
+      
 
       
     </main>
